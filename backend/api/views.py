@@ -232,11 +232,3 @@ class RecipeViewSet(viewsets.ModelViewSet):
         file['Content-Disposition'] = (
             f'attachment; filename={"shopping_cart.txt"}')
         return file
-
-# Пока не понимаю как должен работать функционал и как реализовывается
- #   @action(detail=True, methods=['get'],
- #           permission_classes=(AllowAny,))
-#    def get_link(self, request, **kwargs):
-#        recipe = get_object_or_404(Recipe, id=kwargs['pk'])
-#       link = f'http://127.0.0.1:8000/api/recipes/{recipe.pk}/'
-#        return Response({'link': link}, status=status.HTTP_200_OK)

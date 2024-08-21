@@ -378,7 +378,9 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         tags = validated_data.pop('tags', None)
         if tags is not None:
             if len(tags) != len(set(tags)):
-                raise serializers.ValidationError('Некоторые теги дублируются.')
+                raise serializers.ValidationError(
+                    'Некоторые теги дублируются.'
+                )
             instance.tags.set(tags)
 
         ingredients = validated_data.pop('ingredients', None)
@@ -394,7 +396,9 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
                     'Один или несколько ингредиентов не найдены'
                 )
 
-            ingredient_dict = {ingredient.id: ingredient for ingredient in ingredient_objects}
+            ingredient_dict = {
+                ingredient.id: ingredient for ingredient in ingredient_objects
+            }
             recipe_ingredients = [
                 RecipeIngredient(
                     recipe=instance,
