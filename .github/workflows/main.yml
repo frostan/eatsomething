@@ -71,6 +71,8 @@ jobs:
       - build_and_push_backend_to_docker_hub
       - build_and_push_frontend_to_docker_hub
     steps:
+      - name: Checking out the repo
+        uses: actions/checkout@v3
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
