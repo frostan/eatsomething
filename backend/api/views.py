@@ -1,38 +1,37 @@
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
 from django.db.models import Sum
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from recipes.models import (
-    Favorite,
-    Ingredient,
-    Recipe,
-    ShoppingCart,
-    RecipeIngredient,
-    Tag
-)
-from users.models import User, Follow
-
 from api.filters import IngredientSearchFilter, RecipeFilter
 from api.pagination import PageLimitPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
-    SetPasswordSerializer,
-    UserCreateSerializer,
-    UserReadSerializer,
     AvatarSerializer,
-    TagSerializer,
+    CreateSubscribeSerializer,
     IngredientSerializer,
     RecipeCreateSerializer,
     RecipeReadSerializer,
     RecipeSerializer,
-    CreateSubscribeSerializer,
-    SubscriptionsSerializer
+    SetPasswordSerializer,
+    SubscriptionsSerializer,
+    TagSerializer,
+    UserCreateSerializer,
+    UserReadSerializer
 )
+from recipes.models import (
+    Favorite,
+    Ingredient,
+    Recipe,
+    RecipeIngredient,
+    ShoppingCart,
+    Tag
+)
+from users.models import Follow, User
 
 # -------------------------ПОЛЬЗОВАТЕЛЬ--------------------------------------
 

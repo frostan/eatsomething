@@ -1,9 +1,12 @@
 import base64
-from django.core.files.base import ContentFile
-from rest_framework.validators import UniqueTogetherValidator
+
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions as django_exceptions
+from django.core.files.base import ContentFile
 from djoser.serializers import UserCreateSerializer, UserSerializer
+from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
+
 from recipes.models import (
     Favorite,
     Ingredient,
@@ -12,8 +15,7 @@ from recipes.models import (
     ShoppingCart,
     Tag
 )
-from users.models import User, Follow
-from rest_framework import serializers
+from users.models import Follow, User
 
 # -------------------------ПОЛЬЗОВАТЕЛЬ--------------------------------------
 
