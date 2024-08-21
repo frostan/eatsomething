@@ -1,5 +1,4 @@
 import base64
-from rest_framework.reverse import reverse
 from django.core.files.base import ContentFile
 from rest_framework.validators import UniqueTogetherValidator
 from django.contrib.auth.password_validation import validate_password
@@ -203,7 +202,6 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ('id', 'name', 'slug')
 
-# -------------------------КОРЗИНА---------------------------------------
 
 # -------------------------ИЗБРАННОЕ-------------------------------------
 

@@ -2,11 +2,11 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.db.models import Sum
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, status, viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.reverse import reverse
+
 from recipes.models import (
     Favorite,
     Ingredient,
@@ -204,7 +204,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
                             status=status.HTTP_400_BAD_REQUEST)
 
         if request.method == 'DELETE':
-            if not ShoppingCart.objects.filter(user=request.user, recipe=recipe).exists():
+            if not ShoppingCart.objects.filter(user=request.user,
+                                               recipe=recipe).exists():
                 return Response(
                     {'detail': 'Рецепт не найден в списке покупок.'},
                     status=status.HTTP_400_BAD_REQUEST)
@@ -233,9 +234,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
             f'attachment; filename={"shopping_cart.txt"}')
         return file
 
-    @action(detail=True, methods=['get'],
-            permission_classes=(AllowAny,))
-    def get_link(self, request, **kwargs):
-        recipe = get_object_or_404(Recipe, id=kwargs['pk'])
-        link = f'http://127.0.0.1:8000/api/recipes/{recipe.id}/'
-        return Response({'link': link}, status=status.HTTP_200_OK)
+# Пока не понимаю как должен работать функционал и как реализовывается
+ #   @action(detail=True, methods=['get'],
+ #           permission_classes=(AllowAny,))
+#    def get_link(self, request, **kwargs):
+#        recipe = get_object_or_404(Recipe, id=kwargs['pk'])
+#       link = f'http://127.0.0.1:8000/api/recipes/{recipe.pk}/'
+#        return Response({'link': link}, status=status.HTTP_200_OK)
