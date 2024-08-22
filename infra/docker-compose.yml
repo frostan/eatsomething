@@ -1,45 +1,45 @@
 version: '3.3'
+
 volumes:
-  foodgram_pg_data:
-  foodgram_media:
-  foodgram_static:
+  pg_data:
+  static:
+  media:
 
 services:
   foodgram_db:
     image: postgres:13.10
+    env_file: ../.env
     volumes:
-      - foodgram_pg_data:/var/lib/postgresql/data
-    env_file:
-      - .env
+      - pg_data:/var/lib/postgresql/data
     restart: always
 
   backend:
     image: frostan/foodgram_backend
-    volumes:
-      - foodgram_static:/static/
-      - foodgram_media:/media/
     depends_on:
       - foodgram_db
-    env_file:
-      - .env
+    env_file: ../.env
+    volumes:
+      - static:/backend_static
+      - media:/media
+    restart: always
 
   frontend:
     image: frostan/foodgram_frontend
     command: cp -r /app/build/. /frontend_static/
     volumes:
-      - foodgram_static:/frontend_static
+      - static:/frontend_static
     depends_on:
-      - backend
-    restart: always
-
-  nginx:
+        - backend
+  
+  gateway:
     image: frostan/foodgram_gateway
-    env_file: .env
+    env_file: ../.env
     ports:
-      - "8001:80"
+      - 8001:80
     volumes:
-      - foodgram_static:/static/
-      - foodgram_media:/media/
+      - ./docs/:/usr/share/nginx/html/api/docs/
+      - static:/static
+      - media:/media
     depends_on:
       - frontend
     restart: always
