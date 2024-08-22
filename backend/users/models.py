@@ -11,7 +11,7 @@ class User(AbstractUser):
         'Никнейм',
         max_length=150,
         unique=True,
-        validators=[validate_username,]
+        validators=[validate_username, ]
     )
     first_name = models.CharField(
         'Имя',
