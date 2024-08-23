@@ -62,12 +62,11 @@ jobs:
         with:
           context: ./frontend/
           push: true
-          tags: frostan/foodgram_forntend:latest
+          tags: frostan/foodgram_frontend:latest
 
-build_and_push_nginx_to_docker_hub:
+  build_and_push_nginx_to_docker_hub:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    needs: tests
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v3
@@ -104,7 +103,7 @@ build_and_push_nginx_to_docker_hub:
           script: |
             cd foodgram
             sudo docker compose down
-            sudo docker compose up
+            sudo docker compose up -d
             sudo docker compose -f docker-compose.yml exec backend python manage.py migrate
             sudo docker compose -f docker-compose.yml exec backend python manage.py collectstatic
             sudo docker compose -f docker-compose.yml exec backend cp -r /app/collected_static/. /backend_static/static/
