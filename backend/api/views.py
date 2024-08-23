@@ -213,13 +213,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_204_NO_CONTENT
             )
 
-    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    @action(
+        detail=False,
+        methods=['get'],
+        permission_classes=[IsAuthenticated]
+    )
     def download_shopping_cart(self, request, **kwargs):
         ingredients = (
             RecipeIngredient.objects.filter(
                 recipe__shopping_recipe__user=request.user)
-                .values('ingredient__name', 'ingredient__measurement_unit')
-                .annotate(total_amount=Sum('amount')))
+            .values('ingredient__name', 'ingredient__measurement_unit')
+            .annotate(total_amount=Sum('amount')))
 
         file_content = '\n'.join(
             f'{ingredient["ingredient__name"]} - {ingredient["total_amount"]}'
