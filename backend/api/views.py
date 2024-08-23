@@ -213,22 +213,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_204_NO_CONTENT
             )
 
-    @action(detail=False, methods=['get'],
-            permission_classes=(IsAuthenticated,))
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request, **kwargs):
-        ingredients = (
-            RecipeIngredient.objects
-            .filter(recipe__shopping_recipe__user=request.user)
-            .values('ingredient')
-            .annotate(total_amount=Sum('amount'))
-            .values_list('ingredient__name', 'total_amount',
-                         'ingredient__measurement_unit')
-        )
-        file_list = []
-        [file_list.append(
-            '{} - {} {}.'.format(*ingredient)) for ingredient in ingredients]
-        file = HttpResponse('Cписок покупок:\n' + '\n'.join(file_list),
-                            content_type='text/plain')
-        file['Content-Disposition'] = (
-            f'attachment; filename={"shopping_cart.txt"}')
-        return file
+        ingredients = (RecipeIngredient.objects.filter(recipe__shopping_recipe__user=request.user).values('ingredient__name', 'ingredient__measurement_unit').annotate(total_amount=Sum('amount')))
+
+        file_content = '\n'.join(f"{ingredient['ingredient__name']} - {ingredient['total_amount']} {ingredient['ingredient__measurement_unit']}." for ingredient in ingredients)
+
+        response = HttpResponse(f'Список покупок:\n{file_content}', content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename="shopping_cart.txt"'
+
+        return response
