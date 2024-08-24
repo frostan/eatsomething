@@ -8,38 +8,40 @@ volumes:
 services:
   foodgram_db:
     image: postgres:13.10
-    env_file: ../.env
+    env_file: ../backend/.env
     volumes:
       - pg_data:/var/lib/postgresql/data
     restart: always
 
   backend:
-    image: frostan/foodgram_backend
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
     depends_on:
       - foodgram_db
-    env_file: ../.env
+    env_file: ../backend/.env
     volumes:
-      - static:/backend_static
-      - media:/media
+      - static:/static/
+      - media:/media/
     restart: always
 
   frontend:
     image: frostan/foodgram_frontend
-    command: cp -r /app/build/. /frontend_static/
     volumes:
-      - static:/frontend_static
+      - ../frontend/:/app/result_build/
     depends_on:
         - backend
   
   gateway:
-    image: frostan/foodgram_gateway
-    env_file: ../.env
+    image: nginx:1.22.1
     ports:
-      - 8001:80
+      - "8001:80"
     volumes:
-      - ./docs/:/usr/share/nginx/html/api/docs/
-      - static:/static
-      - media:/media
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ../frontend/build:/usr/share/nginx/html/
+      - ../docs/:/usr/share/nginx/html/api/docs/
+      - static:/var/html/static/
+      - media:/var/html/media/
     depends_on:
-      - frontend
+      - backend
     restart: always

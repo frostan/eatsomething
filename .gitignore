@@ -1,7 +1,6 @@
 frontend/node_modules
 infra/frontend/build
 .env
-migrations/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

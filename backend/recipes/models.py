@@ -5,6 +5,7 @@ from users.models import User
 
 
 class Ingredient(models.Model):
+
     name = models.CharField(
         'Название',
         max_length=200
@@ -15,15 +16,16 @@ class Ingredient(models.Model):
     )
 
     class Meta:
-        ordering = ['name']
-        verbose_name = 'Ингридиент'
-        verbose_name_plural = 'Ингридиенты'
+        ordering = ('name',)
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
 
     def __str__(self):
         return f'{self.name}, {self.measurement_unit}'
 
 
 class Tag(models.Model):
+
     name = models.CharField(
         'Название',
         max_length=200
@@ -44,16 +46,17 @@ class Tag(models.Model):
 
 
 class Recipe(models.Model):
+
     name = models.CharField(
         'Название',
-        max_length=200
+        max_length=200, blank=False, null=False
     )
     text = models.TextField(
-        'Описание'
+        'Описание',
     )
     cooking_time = models.IntegerField(
         'Время приготовления, мин',
-        validators=[MinValueValidator(1)]
+        validators=[MinValueValidator(1)],
     )
     image = models.ImageField(
         'Картинка',
@@ -74,11 +77,11 @@ class Recipe(models.Model):
         Ingredient,
         through='RecipeIngredient',
         through_fields=('recipe', 'ingredient'),
-        verbose_name='Ингредиенты'
+        verbose_name='Ингредиенты',
     )
     tags = models.ManyToManyField(
         Tag,
-        verbose_name='Теги'
+        verbose_name='Теги',
     )
 
     class Meta:
@@ -91,6 +94,7 @@ class Recipe(models.Model):
 
 
 class RecipeIngredient(models.Model):
+
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -101,7 +105,7 @@ class RecipeIngredient(models.Model):
         Ingredient,
         on_delete=models.CASCADE,
         related_name='ingredients',
-        verbose_name='Ингредиент'
+        verbose_name='Ингредиент',
     )
     amount = models.IntegerField(
         'Количество',
@@ -126,6 +130,7 @@ class RecipeIngredient(models.Model):
 
 
 class Favorite(models.Model):
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -154,6 +159,7 @@ class Favorite(models.Model):
 
 
 class ShoppingCart(models.Model):
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
