@@ -31,7 +31,7 @@ from recipes.models import (
     Recipe,
     RecipeIngredient,
     ShoppingCart,
-    Tag
+    Tag,
 )
 from users.models import Follow, User
 
@@ -197,3 +197,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
                                            f'filename={shopping_list}')
 
         return response
+
+    @action(
+        detail=True,
+        methods=['get'],
+        permission_classes=(AllowAny,),
+        url_path='get-link'
+    )
+    def get_link(self, request, pk=None):
+        recipe = self.get_object()
+        url = request.build_absolute_uri(f'/api/recipes/{recipe.id}')
+        return Response({'short-link': url}, status=status.HTTP_200_OK)
