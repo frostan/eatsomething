@@ -1,7 +1,8 @@
 from rest_framework import status
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
-from recipes.models import RecipeIngredient
+from recipes.models import RecipeIngredient, Recipe
 
 
 def recipe_ingredients(recipe, ingredients):
@@ -16,7 +17,8 @@ def recipe_ingredients(recipe, ingredients):
     RecipeIngredient.objects.bulk_create(recipe_ingredients)
 
 
-def util_for_favorite_shopping_cart(request, recipe, serializer_name, model):
+def util_for_favorite_shopping_cart(request, pk, serializer_name, model):
+    recipe = get_object_or_404(Recipe, id=pk)
     if request.method == 'POST':
         serializer = serializer_name(
             data=dict(user=request.user.id, recipe=recipe.id),

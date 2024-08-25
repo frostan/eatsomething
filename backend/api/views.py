@@ -1,11 +1,11 @@
 from django.db.models import Sum
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 from api.filters import IngredientSearchFilter, RecipeFilter
 from api.pagination import PageLimitPagination
@@ -162,17 +162,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post', 'delete'],
             permission_classes=(IsAuthenticated,))
     def favorite(self, request, **kwargs):
-        recipe = get_object_or_404(Recipe, id=kwargs['pk'])
         return util_for_favorite_shopping_cart(
-            request, recipe, FavoriteSerializer, Favorite)
+            request, kwargs['pk'], FavoriteSerializer, Favorite)
 
     @action(detail=True, methods=['post', 'delete'],
             permission_classes=(IsAuthenticated,),
             pagination_class=None)
     def shopping_cart(self, request, **kwargs):
-        recipe = get_object_or_404(Recipe, id=kwargs['pk'])
         return util_for_favorite_shopping_cart(
-            request, recipe, ShoppingCartSerializer, ShoppingCart)
+            request, kwargs['pk'], ShoppingCartSerializer, ShoppingCart)
 
     @action(
         detail=False,
