@@ -28,12 +28,13 @@ def util_for_favorite_shopping_cart(request, pk, serializer_name, model):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    if not model.objects.filter(user=request.user, recipe=recipe).exists():
+    if model.objects.filter(user=request.user, recipe=recipe).exists():
+        model.objects.filter(user=request.user, recipe=recipe).delete()
         return Response(
-            {'detail': 'Рецепт не найден в избранном.'},
-            status=status.HTTP_400_BAD_REQUEST
+            {'detail': 'Рецепт успешно удален'},
+            status=status.HTTP_204_NO_CONTENT
         )
     return Response(
-        {'detail': 'Рецепт успешно удален из избранного.'},
-        status=status.HTTP_204_NO_CONTENT
+        {'detail': 'Рецепт не найден'},
+        status=status.HTTP_400_BAD_REQUEST
     )
