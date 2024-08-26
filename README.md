@@ -125,6 +125,7 @@ sudo docker compose -f docker-compose.production.yml down
 sudo docker compose -f docker-compose.production.yml up -d
 sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
 sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py loadcsv
 ```
 ### Создаем суперпользователся. Следуем инструкциям при выполнении.
 ```
