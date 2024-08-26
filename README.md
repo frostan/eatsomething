@@ -12,7 +12,7 @@
 ![Static Badge](https://img.shields.io/badge/Gunicorn-white)
 ![Static Badge](https://img.shields.io/badge/Node.js-orange)
 ![Static Badge](https://img.shields.io/badge/JS-yellow)
-# ДАННЫЕ ДЛЯ ТЕСТОВ ЛЕЖАТ В ФАЙЛЕ foodgram_info.yml
+## ДАННЫЕ ДЛЯ ТЕСТОВ ЛЕЖАТ В ФАЙЛЕ foodgram_info.yml
 ## Запуск проекта на сервере на базе OC Linux.
 Обновить пакетный менеджер
 ```
