@@ -82,7 +82,7 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({'detail': 'Пароль успешно изменен!'},
-                        status=status.HTTP_204_NO_CONTENT)
+                        status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'],
             permission_classes=(IsAuthenticated,),
