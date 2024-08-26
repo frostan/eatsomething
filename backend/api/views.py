@@ -107,13 +107,16 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data,
                             status=status.HTTP_201_CREATED)
-        if not Follow.objects.filter(user=request.user,
-                                     author=author).exists():
+        if Follow.objects.filter(user=request.user, author=author).exists():
+            Follow.objects.filter(user=request.user, author=author).delete()
             return Response(
-                {'detail': 'Подписка не найдена'},
-                status=status.HTTP_400_BAD_REQUEST)
-        return Response({'detail': 'Успешная отписка'},
-                        status=status.HTTP_204_NO_CONTENT)
+                {'detail': 'Успешная отписка'},
+                status=status.HTTP_204_NO_CONTENT
+            )
+        return Response(
+            {'detail': 'Подписка не найдена'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 # -------------------------ТЕГИ--------------------------------------
