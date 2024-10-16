@@ -116,7 +116,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(
             {'detail': 'Подписка не найдена'},
             status=status.HTTP_400_BAD_REQUEST
-        )
+            )
 
 
 # -------------------------ТЕГИ--------------------------------------
